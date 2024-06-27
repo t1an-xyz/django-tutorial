@@ -12,7 +12,6 @@ from .decorators import *
 
 # Create your views here.
 
-@login_required(login_url='login')
 @admin_only
 def home(request):
     orders = Order.objects.all()
@@ -117,6 +116,9 @@ def registerPage(request):
             user = form.save()
             group = Group.objects.get(name='customer')
             user.groups.add(group)
+            Customer.objects.create(
+                user = user
+            )
             
             messages.success(request, 'Account created for ' + form.cleaned_data.get('username'))
             return redirect('login')
@@ -126,5 +128,9 @@ def registerPage(request):
 
 @login_required(login_url='login')
 def userPage(request):
-    context = {}
+    orders = request.user.customer.order_set.all()
+    total_orders = orders.count()
+    delivered = orders.filter(status='Delivered').count()
+    pending = orders.filter(status='Pending').count()
+    context = {'orders': orders, 'total_orders': total_orders, 'total_delivered': delivered, 'total_pending': pending}
     return render(request, 'accounts/user.html', context)
