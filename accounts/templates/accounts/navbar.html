@@ -21,6 +21,10 @@
           <li class="nav-item">
             <a class="nav-link" href="{% url 'products' %}">Products</a>
           </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'account_settings' %}">Account</a>
+          </li>
           {% endif %}
         </ul>
       </div>

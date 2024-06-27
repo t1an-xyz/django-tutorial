@@ -87,3 +87,7 @@ local_settings.py
 
 .env
 db.sqlite3
+
+static/images/*
+!static/images/profile1.png
+!static/images/logo.png
